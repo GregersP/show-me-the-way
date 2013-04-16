@@ -1,9 +1,28 @@
 var paused = false,
+
+    // Map in the center 
+    /*
     map = L.map('map', {
         zoomControl: false
     }).setView([55.677781, 12.569228], 13),
     bing = new L.BingLayer('Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU', 'Aerial')
         .addTo(map),
+    */
+    map = L.map('map', {
+        zoomControl: false
+    }).setView([55.677781, 12.569228], 13),
+    fotforaar = new L.tileLayer.wms("http://kortforsyningen.kms.dk/service", {
+	servicename: 'orto_foraar', //'print_topo_skaermkort',
+	layers: 'orto_foraar', //'dtk_skaermkort',
+	format: 'image/png',
+	ticket: getKfTicket(),  // Ticket for Kortforsyningen
+	transparent: true,
+	attribution: "Imagery ©Geodatastyrelsen",
+	options:{maxZoom: 18},
+	wms:true
+    }).addTo(map),
+	
+   // Little overview to the right
     overview_map = L.map('overview_map', {
         zoomControl: false,
         dragging: false,
