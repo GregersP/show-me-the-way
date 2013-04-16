@@ -46,7 +46,7 @@ osmStream.runFn(function(err, data) {
 
             if (paused) return;
 
-            if (nextChange === null) {
+            if (nextChange === null || nextChange === undefined ) {
                 clearInterval(wayAddInterval);
             } else {
                 drawLineChange(nextChange);

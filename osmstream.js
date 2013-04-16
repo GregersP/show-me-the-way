@@ -17,9 +17,9 @@ var osmStream = (function osmMinutely() {
     }
 
     function changeUrl(id) {
-        return baseUrl + changePath + qs.stringify({
-            id: id, info: 'no', bbox: '-180,-90,180,90'
-        });
+        return baseUrl + changePath + qs.stringify({  // Shouldnt stringify the bbox, as that fecks up overpass...
+            id: id, info: 'no'  // DENMARK: NE 57.751949, 15.193240 SW 54.559132, 8.074720
+        }) +  '&bbox=8,54,16,58'; //'&bbox=54,8,58,16';
     }
 
     function requestState(cb) {
