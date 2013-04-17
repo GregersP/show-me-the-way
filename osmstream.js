@@ -96,6 +96,7 @@ var osmStream = (function osmMinutely() {
     function run(id, cb) {
         requestChangeset(id, function(err, xml) {
             if (err) return cb([]);
+            if (!xml.getElementsByTagName) return cb([]); // Check if response was 200 OK, but string returned empty...
             var actions = xml.getElementsByTagName('action'), a;
             var items = [];
             for (var i = 0; i < actions.length; i++) {

@@ -15,7 +15,7 @@ var paused = false,
 	servicename: 'orto_foraar', //'print_topo_skaermkort',
 	layers: 'orto_foraar', //'dtk_skaermkort',
 	format: 'image/png',
-	ticket: getKfTicket(),  // Ticket for Kortforsyningen
+	ticket: getKfTicket(),  // Ticket for Kortforsyningen, proprietary code for ticket - do not use this unless agreed with Septima.
 	transparent: true,
 	attribution: "Imagery ©Geodatastyrelsen",
 	options:{maxZoom: 18},
@@ -51,6 +51,11 @@ osmStream.runFn(function(err, data) {
     for (var i = 0; i < data.length; i++) {
         if (data[i].neu.type === 'way' && data[i].type !== 'delete') {
             filteredChanges.push(data[i]);
+           // console.log("Took this data (type = "+ data[i].neu.type +"): " + JSON.stringify(data[i].neu));
+        }
+        else
+        {
+        	//console.log("Did not take this data (type = "+ data[i].neu.type +"): " + JSON.stringify(data[i].neu));
         }
     }
 
@@ -59,9 +64,10 @@ osmStream.runFn(function(err, data) {
     filteredChanges = filteredChanges.sort(function(a, b) {
             return b.neu.linestring.length - a.neu.linestring.length;
         }).slice(0, changesToShowEveryMinute),
-        millisPerChange = (60000 / filteredChanges.length),
+        millisPerChange = (60000 / (filteredChanges.length + 1) ), // add one, as the first call will happen after a millisPerChange milliseconds
         wayAddInterval = setInterval(function() {
             var nextChange = filteredChanges.pop();
+            //console.log("Called, wayAddInterval was: " + wayAddInterval + ", nextchange was: " + JSON.stringify(nextChange) );
 
             if (paused) return;
 
